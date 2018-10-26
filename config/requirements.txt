@@ -1,0 +1,17 @@
+pip
+pew
+ptpython
+pgcli
+pg_activity
+odoorpc
+erppeek
+tmuxp
+httpie
+requests[security]
+pylint
+flake8
+flake8-docstrings
+hacking
+pep8
+autopep8
+gitpython

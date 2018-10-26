@@ -1,0 +1,86 @@
+version: '2'
+services:
+  odoo:
+#    image: dat14520143/airt:${TAG}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: airt
+    hostname: airt
+    environment:
+      # AirT environment
+      # - AIRT_USER: "Odoo"
+      # - AIRT_EMAIL: "odoo@AirT.link"
+      # - AIRT_GITLAB_TOKEN: "gitlab-token"
+      # - AIRT_KODOO_USER: "AirT"
+      # - AIRT_KODOO_PASS: "iamAirT"
+      # - AIRT_HTTP_USER: "AirT"
+      # - AIRT_HTTP_PASS: "iamAirT"
+
+      # Postgres environment
+      - PGHOST=db
+      - PGUSER=odoo
+      - PGPASSWORD=odoo
+
+    networks:
+      - AirT
+
+    ports:
+      - "127.0.0.1:2222:22"     # ssh
+      - "8069:8069"             # odoo
+      - "8071:8071"             # odoo
+      - "8072:8072"             # odoo
+      - "8073:8073"             # odoo
+      - "8074:8074"             # odoo
+      - "8075:8075"             # odoo
+
+    volumes:
+      # SSH personal keys
+      - ~/.ssh:/usr/local/ssh:ro
+
+      # openerp sources
+      - ~/AirT/code:/opt/odoo/code
+
+
+      # X11 socket, used to communicate with the X11 server within the container
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+
+    mem_limit: 2g
+    memswap_limit: 4g
+    depends_on: 
+      - db
+    restart: always
+
+  db:
+    image: "postgres:${PGVER}-alpine"
+    container_name: postgres
+    hostname: db
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+    networks:
+      - AirT
+    ports:
+      - 127.0.0.1:5432:5432     # Postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ~/postgres/unaccent.rules:/usr/share/postgresql/${PGVER}/tsearch_data/unaccent.rules:ro
+      - ~/postgres/psql-init.sql:/docker-entrypoint-initdb.d/psql-init.sql:ro
+    restart: always
+
+  pgadmin:
+    # image: fenglc/pgadmin4
+    image: thuandt/pgadmin4
+    container_name: pgadmin4
+    networks:
+      - AirT
+    ports:
+      - 127.0.0.1:5050:5050     # PgAdmin4
+    restart: always
+
+volumes:
+  pgdata:
+
+networks:
+  AirT:
+
