@@ -2,7 +2,7 @@
 
 Odoo dev image for devs
 
-- Based `buildpack-deps:xenial`
+- Based `buildpack-deps:bionic`
 - Use `supervisord` as PID1
 - Included many utils for developer: `tmux`, `screen`, `tmuxp`, `tig`, network tools
 - Use Oh-My-ZSH & ZSH by default
@@ -22,7 +22,7 @@ Odoo dev image for devs
 # PostgreSQL version
 PGVER=10
 # Odoo container tag
-TAG=latest
+TAG=18.04
 ```
 
 Details [here](https://docs.docker.com/compose/environment-variables/) and [here](https://docs.docker.com/compose/compose-file/#variable-substitution)
